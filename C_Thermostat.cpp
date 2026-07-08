@@ -1,50 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
+
+static inline long long absl(long long v){ return v < 0 ? -v : v; }
 
 void solve() {
-    ll L, R, X;
-    cin >> L >> R >> X;
-    ll P, Q;
-    cin >> P >> Q;
-    int moves = 0;
-    
-    while (P != Q) {
-        if (moves > 3) {
-            cout << -1 << '\n';
-            return;
-        }
-        
-        if (P < Q) {
-            if (Q - P >= X) {
-                cout << moves + 1 << '\n';
-                return;
-            }
-            if (P - X < L) {
-                P = min(P + X, R);
-            } else {
-                P -= X;
-            }
-        } else {
-            if (P - Q >= X) {
-                cout << moves + 1 << '\n';
-                return;
-            }
-            if (P + X > R) {
-                P = max(P - X, L);
-            } else {
-                P += X;
-            }
-        }
-        moves++;
-    }
-    cout << moves << '\n';
+    long long l, r, x, a, b;
+    cin >> l >> r >> x >> a >> b;
+
+    if (a == b) { cout << 0 << "\n"; return; }
+    if (absl(a - b) >= x) { cout << 1 << "\n"; return; }
+
+    bool aL = absl(a - l) >= x, aR = absl(a - r) >= x;
+    bool bL = absl(b - l) >= x, bR = absl(b - r) >= x;
+
+    if ((aL && bL) || (aR && bR)) { cout << 2 << "\n"; return; }
+
+    if (r - l >= x && (aL || aR) && (bL || bR)) { cout << 3 << "\n"; return; }
+
+    cout << -1 << "\n";
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    
+
     int T;
     cin >> T;
     while (T--) solve();
